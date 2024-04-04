@@ -18,7 +18,7 @@ public class P11399 {
             A[i] = Integer.parseInt(stk.nextToken());
         }//end for
 
-        //버블 정렬 사용
+        //삽입 정렬 사용
         for(int i = 1; i < N; i++){
 
             int insert_point = i;
