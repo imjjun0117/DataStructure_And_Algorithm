@@ -21,7 +21,6 @@ public class Pxxxx {
 
             }catch(Exception e){
 
-                continue;
 
             }//end catch
 

@@ -4,6 +4,7 @@ package sort;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 //수 찾기 백준 온라인 저지 1920번
@@ -11,44 +12,71 @@ import java.util.StringTokenizer;
 public class P1920 {
 
     public static void main(String[] args) throws IOException {
-        //단순히 이중 M을 이중 for문을 통해서 값을 찾는다면 시간초과
-        //모든 정수 범위는 int 범위까지 boolean 배열과 M 배열 인덱스를 통햏 찾을 예정(되려나?)
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine());
-
-        boolean[] target_bool = new boolean[Integer.MAX_VALUE];
+        int[] arr = new int[N];
 
         StringTokenizer stk = new StringTokenizer(br.readLine());
 
-        for(int i = 0; i < N; i++){
+        for(int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(stk.nextToken());
+        }
 
-            int value = Integer.parseInt(stk.nextToken());
 
-            target_bool[value] = true;
-
-        }//end for
-
+        // 배열은 반드시 정렬되어있어야한다.
+        Arrays.sort(arr);
 
         int M = Integer.parseInt(br.readLine());
-        stk = new StringTokenizer(br.readLine());
+
 
         StringBuilder sb = new StringBuilder();
+        stk = new StringTokenizer(br.readLine());
+        for(int i = 0; i < M; i++) {
 
-        for(int i = 0; i < M; i++){
+            // 찾고자 하는 값이 있을 경우 1, 없을 경우 0을 출력해야한다.
+            if(binarySearch(arr, Integer.parseInt(stk.nextToken())) >= 0) {
+                sb.append(1).append('\n');
+            }
+            else {
+                sb.append(0).append('\n');
+            }
+        }
+        System.out.println(sb);
+    }
 
-            int searchInt = Integer.parseInt(stk.nextToken());
 
-            if(target_bool[searchInt]){
-                sb.append("1\n");
-            }else{
-                sb.append("0\n");
-            }//end else
+    /**
+     * @param arr 정렬 된 배열
+     * @param key 찾으려는 값
+     * @return key와 일치하는 배열의 인덱스
+     */
+    public static int binarySearch(int[] arr, int key) {
 
-        }//end for
+        int lo = 0;					// 탐색 범위의 왼쪽 끝 인덱스
+        int hi = arr.length - 1;	// 탐색 범위의 오른쪽 끝 인덱스
 
-        System.out.println(sb.toString());
-        br.close();
-    }//main
+        // lo가 hi보다 커지기 전까지 반복한다.
+        while(lo <= hi) {
 
-}//class
+            int mid = (lo + hi) / 2;	// 중간위치를 구한다.
+
+            // key값이 중간 위치의 값보다 작을 경우
+            if(key < arr[mid]) {
+                hi = mid - 1;
+            }
+            // key값이 중간 위치의 값보다 클 경우
+            else if(key > arr[mid]) {
+                lo = mid + 1;
+            }
+            // key값과 중간 위치의 값이 같을 경우
+            else {
+                return mid;
+            }
+        }
+
+        // 찾고자 하는 값이 존재하지 않을 경우
+        return -1;
+
+    }}//class
